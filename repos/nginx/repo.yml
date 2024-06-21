@@ -1,0 +1,3 @@
+name: nginx
+origin: https://github.com/nginx/nginx.git
+image: flavor-nginx:main

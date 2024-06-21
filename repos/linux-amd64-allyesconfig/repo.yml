@@ -1,0 +1,5 @@
+name: linux-amd64-allyesconfig
+origin: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+image: flavor-linux:main
+env:
+  CONFIG_TARGET: allyesconfig
