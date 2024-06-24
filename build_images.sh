@@ -61,7 +61,7 @@ that() {
 PREFIX=
 if [ x != x$IMAGE_REPO ]
 then
-    IMAGE_PREFIX="$IMAGE_REPO/"
+    PREFIX="$IMAGE_REPO/"
 fi
 
 that vanilla docker buildx build \
