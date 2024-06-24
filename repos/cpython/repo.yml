@@ -1,0 +1,5 @@
+name: cpython
+origin: https://github.com/python/cpython.git
+branches:
+  - main
+image: flavor-cpython:main
