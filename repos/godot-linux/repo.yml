@@ -1,3 +1,5 @@
 name: godot-linux
 origin: https://github.com/godotengine/godot.git
+branches:
+  - master
 image: flavor-godot:main

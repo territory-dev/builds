@@ -58,6 +58,7 @@ The YAML encodes an object with the following fields:
 | image       | string          | Docker image to use for building.            |
 | env         | object          | Environment variables passed to the build.   |
 | prepare     | string          | Path to prepare script. Defaults to prepare.sh in same directory.  |
+| branches    | list of strings | Which branches to index.                     |
 
 
 # How do I generate `compile_commands.json`?
