@@ -134,3 +134,8 @@ The build container is disconnected from the Internet.  Any requirements
 your prepare script needs have to be provided in the docker image.
 
 Scripts will run as the `territory` user with UID 2000.
+
+
+# Build logs
+
+Build logs can be inspected in the [in-app builds page](https://app.territory.dev/builds).
