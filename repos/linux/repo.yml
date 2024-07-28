@@ -1,4 +1,4 @@
-name: linux-amd64-allyesconfig
+name: linux
 origin: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 branches:
   - master
