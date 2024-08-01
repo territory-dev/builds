@@ -2,4 +2,4 @@ name: git
 origin: https://github.com/git/git.git
 branches:
   - master
-image: flavor-linux:main
+image: europe-central2-docker.pkg.dev/territory-public-images/flavors/linux:main

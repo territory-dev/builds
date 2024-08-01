@@ -1,11 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-IMAGE_REPO=
+IMAGE_REPO=europe-central2-docker.pkg.dev/territory-public-images/flavors
 BUILD_SHA=
 PUSH=
 BUILD_OPTS=
-TAG=
+TAG=main
 WHAT=
 
 while [ "x${1:-}" != x ]
@@ -42,12 +42,6 @@ do
     shift 1
 done
 
-if [ "x${TAG:-}" = x ]
-then
-    echo "--tag unspecified"
-    exit 1
-fi
-
 that() {
     THAT="$1"
     shift 1
@@ -75,8 +69,8 @@ for flavor in llvm godot linux nginx cpython
 do
     that $flavor docker buildx build $PUSH \
         $BUILD_OPTS \
-        --build-context "vanilla=docker-image://${PREFIX}vanilla:$TAG" \
-        -f images/flavor-$flavor/Dockerfile \
-        -t ${PREFIX}flavor-$flavor:$TAG \
+        --build-context "vanilla=docker-image://${PREFIX}vanilla:${TAG}" \
+        -f images/flavor-${flavor}/Dockerfile \
+        -t ${PREFIX}${flavor}:${TAG} \
         .
 done

@@ -2,4 +2,4 @@ name: llvm
 origin: https://github.com/llvm/llvm-project.git
 branches:
   - main
-image: flavor-llvm:main
+image: europe-central2-docker.pkg.dev/territory-public-images/flavors/llvm:main

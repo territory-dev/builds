@@ -2,4 +2,4 @@ name: godot
 origin: https://github.com/godotengine/godot.git
 branches:
   - master
-image: flavor-godot:main
+image: europe-central2-docker.pkg.dev/territory-public-images/flavors/godot:main
