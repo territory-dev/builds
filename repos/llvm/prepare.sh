@@ -13,3 +13,6 @@ cmake \
 
 
 ninja -t targets |  awk -F: '/\.inc/ { print $1 }' | xargs ninja
+
+
+/var/lib/venv/bin/territory upload --tarball

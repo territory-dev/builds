@@ -18,3 +18,5 @@ make -j${CORES:-8} --ignore-errors CC='clang' || :
 
 fakecc dump compile_commands.json
 fakecc stop
+
+territory upload --tarball
