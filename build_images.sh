@@ -34,6 +34,9 @@ do
             shift 1
             BUILD_OPTS="--platform $1 $BUILD_OPTS"
             ;;
+        --no-cache)
+            BUILD_OPTS="--no-cache $BUILD_OPTS"
+            ;;
         *)
             echo "bad argument: $1"
             exit 1
