@@ -8,11 +8,12 @@ cmake \
     -DLLVM_ENABLE_PROJECTS=all      \
     -DLLVM_ENABLE_RUNTIMES=all      \
     -DLLVM_USE_LINKER=lld           \
+    -DLLVM_APPEND_VC_REV=OFF        \
     -G Ninja                        \
     -S llvm
 
 
-ninja -t targets |  awk -F: '/\.inc/ { print $1 }' | xargs ninja
+ninja -t targets |  awk -F: '/\.inc|\.h/ { print $1 }' | xargs ninja
 
 
 /var/lib/venv/bin/territory upload --tarball

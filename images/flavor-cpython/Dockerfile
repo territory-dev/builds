@@ -1,4 +1,6 @@
-FROM vanilla
+ARG VANILLA_IMAGE
+FROM $VANILLA_IMAGE
+
 RUN --mount=type=cache,target=/var/cache/apt \
   sed -i.bak 's/^Types: deb/Types: deb deb-src/g' /etc/apt/sources.list.d/debian.sources && \
   apt-get update && \

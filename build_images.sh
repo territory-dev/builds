@@ -69,7 +69,7 @@ for flavor in llvm godot linux nginx cpython
 do
     that $flavor docker buildx build $PUSH \
         $BUILD_OPTS \
-        --build-context "vanilla=docker-image://${PREFIX}vanilla:${TAG}" \
+        --build-arg "VANILLA_IMAGE=${PREFIX}vanilla:${TAG}" \
         -f images/flavor-${flavor}/Dockerfile \
         -t ${PREFIX}${flavor}:${TAG} \
         .

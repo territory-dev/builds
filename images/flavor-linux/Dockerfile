@@ -1,4 +1,6 @@
-FROM vanilla
+ARG VANILLA_IMAGE
+FROM $VANILLA_IMAGE
+
 RUN --mount=type=cache,target=/var/cache/apt \
   apt-get update && \
   apt-get install -y \

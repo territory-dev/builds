@@ -1,0 +1,14 @@
+steps:
+- name: gcr.io/cloud-builders/docker
+  entrypoint: /usr/bin/bash
+  args: [
+    './build_images.sh',
+    '--repo', 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors',
+    '--tag', '${TAG_NAME}',
+  ]
+images:
+- 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/vanilla:${TAG_NAME}'
+- 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/llvm:${TAG_NAME}'
+- 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/godot:${TAG_NAME}'
+- 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/nginx:${TAG_NAME}'
+- 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/cpython:${TAG_NAME}'
