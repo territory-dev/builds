@@ -1,6 +1,7 @@
+# Territory.dev Build Configuration
+
 This repo contains configurations and scripts used to prepare codebases
 for indexing by [territory.dev](https://territory.dev).
-
 
 # Anatomy of a Territory.dev build
 
@@ -10,28 +11,33 @@ We fetch the latest revision of a tracked branch.
 
 ## Step 2: Prepare
 
-To index properly, all the source files and a `compile_commands.json`
-file need to be present.  We run a "prepare" script to do whatever
-needs to be done to ensure that.  The script runs in an isolated
-Docker container that can be customized with whatever requirements
-the repository needs.
+The preparation step varies by language:
+- For C/C++, we need to generate a compilation database and ensure all source files are present
+- For Go, we need to ensure all dependencies are downloaded and module information is available
+
+At the end of the prepare step we run the Territory client in offline mode
+(with the `--tarball-only` flag) to package code into a `territory_upload.tar.gz`
+archive.
+
+We run a "prepare" script to ensure that. The script runs in an isolated
+Docker container that can be customized with whatever requirements the repository needs.
 
 ## Step 3: Parse
 
-In the same environment we use the clang library to scan code in
-the repo.  Results are passed to an indexer.
+In the same environment, we use language-specific parsers to scan code in
+the repo. For C/C++, this uses the clang library. For Go, we use Go's native
+parsing facilities. Results are passed to an indexer.
 
 ## Step 4: Index
 
 We generate a code graph using our proprietary indexer.
-
 
 # How to add a build for your repo?
 
 We need 2 files:
 
 - repo.yml describing what to build
-- prepare.sh script to generate a compilation database file (`compile_commands.json`)
+- prepare.sh script to handle language-specific preparation
 
 You also need to choose a Docker image that will serve as the environment for
 the Prepare and Parse steps.
@@ -49,40 +55,45 @@ The YAML encodes an object with the following fields:
 | env         | object          | Environment variables passed to the build.   |
 | prepare     | string          | Path to prepare script. Defaults to prepare.sh in same directory.  |
 | branches    | list of strings | Which branches to index.                     |
+| lang        | "c" or "go"     | Repository language. Determines which parser will be used. |
 
 Here is an example of configuration for the LLVM repo:
 
 ```yaml
+# C/C++ example (LLVM)
 name: llvm
 origin: https://github.com/llvm/llvm-project.git
 branches:
   - main
 image: flavor-llvm:main
+lang: c
 ```
 
-## How do I generate `compile_commands.json`?
 
-We need a `prepare.sh` script to generate the compilation database
-file (and potentially any source files to index that are not in the repo).
-How to do that depends on the build system you use.
+## Language-Specific Preparation
 
-### Use your build tool's facilities
+### C/C++ Projects
 
-#### CMake
+For C/C++ projects, we need to generate a `compile_commands.json` compilation database
+file. There are several ways to accomplish this:
 
-CMake can generate `compile_commands.json` for you.  Set the
+#### Using Build System Facilities
+
+##### CMake
+
+CMake can generate `compile_commands.json` for you. Set the
 [CMAKE_EXPORT_COMPILE_COMMANDS](https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html)
 environment variable to enable that feature.
 
-### Use a build capture tool
+#### Using Build Capture Tools
 
-#### fakecc
+##### fakecc
 
 We built [fakecc](https://github.com/territory-dev/fakecc) as a simple
 way to capture compile commands executed during a build while avoiding
-unnnecessary work.
+unnecessary work.
 
-Let's take a look at the CPython build config.  We pre-install
+Here's an example from the CPython build config. We pre-install
 fakecc in the [Docker image](./images/flavor-cpython/Dockerfile):
 
 ```dockerfile
@@ -92,8 +103,7 @@ RUN \
 ```
 
 Then, in the [prepare stage](./repos/cpython/prepare.sh) we wrap
-the call to `make` in `fakecc run`.  This will capture arguments to
-`clang` every time `make` executes it and save them to `compile_commands.json`.
+the call to `make` in `fakecc run`:
 
 ```sh
 #!/bin/bash
@@ -107,34 +117,48 @@ export CCX="clang++"
 source /var/lib/venv/bin/activate
 export FAKECC_SOCK=/tmp/fakecc.sock
 fakecc run make -j${CORES:-8} --ignore-errors || :
+
+territory upload --tarball-only -l c
 ```
 
-
-#### Bear
+##### Bear
 
 [Bear](https://github.com/rizsotto/Bear) is another tool for capturing
 `compile_commands.json` from a build.
 
+### Go Projects
+
+Territory.dev Go parser will scan modules in your repo.  The prepare
+step usually ensures that all dependencies are installed and the
+GO paths are set correctly, then runs the territory client.  See
+the example of a Kubernetes repo build:
+
+
+```sh
+#!/bin/bash
+set -xeuo pipefail
+
+export GOGC=2000
+make
+territory upload --tarball-only -l go --system
+```
 
 ## Build environments
 
-The prepare script and parser run in a docker container.  You can
+The prepare script run in a docker container. You can
 provide a docker image suitable for your repository.
 
 See the [Dockerfile](images/flavor-vanilla/Dockerfile)
-in `images/flavor-vanilla` for a generic base.
+in `images/flavor-vanilla` for a generic base and other
+dockerfiles in this repo for examples.
 
-### Requirements
-
-Since our parser executes within the container, libclang 18 must be present.
 
 ### Limitations
 
-The build container is disconnected from the Internet.  Any requirements
-your prepare script needs have to be provided in the docker image.
+The build container has limited internet connectivity.  You might want
+to bake required dependencies for your repo into the container.
 
 Scripts will run as the `territory` user with UID 2000.
-
 
 # Build logs
 

@@ -10,5 +10,7 @@ images:
 - 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/vanilla:${TAG_NAME}'
 - 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/llvm:${TAG_NAME}'
 - 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/godot:${TAG_NAME}'
+- 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/linux:${TAG_NAME}'
 - 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/nginx:${TAG_NAME}'
 - 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/cpython:${TAG_NAME}'
+- 'europe-central2-docker.pkg.dev/${PROJECT_ID}/flavors/go:${TAG_NAME}'

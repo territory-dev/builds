@@ -2,4 +2,5 @@ name: nginx
 origin: https://github.com/nginx/nginx.git
 branches:
   - master
+lang: c
 image: europe-central2-docker.pkg.dev/territory-public-images/flavors/nginx:main

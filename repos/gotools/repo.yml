@@ -1,0 +1,6 @@
+name: gotools
+origin: https://go.googlesource.com/tools
+branches:
+  - master
+image: europe-central2-docker.pkg.dev/territory-public-images/flavors/go:main
+lang: go

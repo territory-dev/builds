@@ -2,4 +2,5 @@ name: cpython
 origin: https://github.com/python/cpython.git
 branches:
   - main
+lang: c
 image: europe-central2-docker.pkg.dev/territory-public-images/flavors/cpython:main

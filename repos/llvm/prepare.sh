@@ -16,4 +16,4 @@ cmake \
 ninja -t targets |  awk -F: '/(\.inc|\.h):/ { print $1 }' | xargs ninja
 
 
-/var/lib/venv/bin/territory upload --tarball
+/var/lib/venv/bin/territory upload --tarball-only

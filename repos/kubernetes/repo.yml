@@ -1,0 +1,6 @@
+name: kubernetes
+origin: https://github.com/kubernetes/kubernetes.git
+branches:
+  - master
+image: europe-central2-docker.pkg.dev/territory-public-images/flavors/go:main
+lang: go

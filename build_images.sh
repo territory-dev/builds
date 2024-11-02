@@ -68,7 +68,7 @@ that vanilla docker buildx build \
     -t ${PREFIX}vanilla:$TAG \
     .
 
-for flavor in llvm godot linux nginx cpython
+for flavor in llvm godot linux nginx cpython go
 do
     that $flavor docker buildx build $PUSH \
         $BUILD_OPTS \

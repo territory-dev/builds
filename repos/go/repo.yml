@@ -1,0 +1,6 @@
+name: go
+origin: https://go.googlesource.com/go
+branches:
+  - master
+image: europe-central2-docker.pkg.dev/territory-public-images/flavors/go:main
+lang: go
